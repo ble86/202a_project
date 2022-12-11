@@ -7,7 +7,8 @@ This file is used to collect raw keypress sensor data and output it to a CSV.
 
 Perform the following steps to run this:
 - Ensure that the suggested virtual environment has been set up as written in the software/ directory
-- Change line 12 in data_collectioni.py to set the file reference for the serial port used by your computer to communicate with the embedded device (Linux/Mac method of referring to devices)
+- Follow the instructions in software/embedded/README.md to flash the ESP32 with the corresponding C code to perform sensor reading
+- Change line 12 in data_collection.py to set the file reference for the serial port used by your computer to communicate with the embedded device (Linux/Mac method of referring to devices)
 - Connect the USB cable from the remote keyboard to your personal computer. This will act as your new standard input source for the program
 - Execute the command
 ```

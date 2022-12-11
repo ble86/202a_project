@@ -30,4 +30,4 @@ To perform training, follow the instructions in the training_scripts/README.md f
 To perform word prediction, follow the instructions in the python_model/README.md file.
 
 ### Run Final System
-To run the final system, simply follow the instructions to run the ESP32 code to flash the ESP32 program, then follow the instructions to run the word prediction model on your personal computer, with the flashed ESP32 connected to your personal computer through the USB connection. 
+To run the final system, simply follow the instructions in the embedded folder to flash the ESP32 program, then follow the instructions to run the word prediction model on your personal computer, with the flashed ESP32 connected to your personal computer through the USB connection. 
