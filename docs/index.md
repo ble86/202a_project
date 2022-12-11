@@ -10,7 +10,7 @@ Our project is to investigate an embedded systems-based methodology for identifi
 
 # Required Submissions
 
-* [Proposal]()
+* [Proposal](proposal)
 * [Midterm Checkpoint Presentation Slides]()
 * [Final Presentation Slides]()
 * [Final Report](report)
