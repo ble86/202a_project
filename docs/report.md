@@ -13,17 +13,18 @@ Our project is to investigate an embedded systems-based methodology for identifi
 
 # 1. Introduction
 
-- Motivation & Objective: What are you trying to do and why? (plain English without jargon)
-State of the Art & Its Limitations: How is it done today, and what are the limits of current practice?
+### 1.a. Motivation & Objective
+### 1.b. State of the Art & Its Limitations:
 
-- Novelty & Rationale: What is new in your approach and why do you think it will be successful?
-
-- Potential Impact: If the project is successful, what difference will it make, both technically and broadly?
-
-- Challenges: What are the challenges and risks?
-
+### 1.c. Novelty & Rationale
+The primary novelties to the project are the use of contact microphones and the post processing we are doing to associate key clusters. Various side channel analysis techniques have been demonstrated with sensing devices such as IMUs; however, to our knowledge there has yet to be an analysis done with a low cost contact microphone. Furthermore, as a result of our key clustering approach to localization we created a novel approach to infer words from key clusters. ERIC EXPLAIN PLZZZ
+### 1.d. Potential Impact
+Given the successful inference of keypress vibration data into words, we will have demonstrated the viability of a malicious side channel attack. Due to the nature of the attack, there would be no direct method for detection of the attack. Such a device could potentially be integrated into a keyboard during manufacturing or potentially embedded into a small form factor device and attached to a keyboard already deployed in the field.
+### 1.e. Challenges
+Perhaps the largest risk of our project was the uncertainty that contact microphones were not sensitive enough or operated in the desired band to pick up on the needed information to infer anything useful about the actual keys being pressed. Relevant work has shown the IMUs can be used to perform similar attacks; however, the use of contact mics is novel and we did not know if localization of key presses was possible using them. As a result, we decided to use four contact microphones on the back of the keyboard under the rationale that we would be able to extract localization data from the differences in time that the vibration reached each microphone.
+### 1.f. Project Goals/Requirements for Success
 The overall goal of our project is to demonstrate a side channel attack where keystroke information can be inferred from its resulting vibration. We want to be able to detect individual key-press events from vibration data and record that data for training and classification. We also want to deploy an edge-based machine learning for key press classification. Finally, we want to communicate our classifications to a second device to verify classifications can be read by another user to represent malicious keylogging.
-
+### 1.g. Metrics of Success
 The specific steps needed to complete a system that has the ability to classify vibration based key presses was logically broken into three separate systems. The embedded system, the machine learning model, and secondary device, each with their separate metrics of success.
 
 Our embedded system must have the ability to CONTINUOUSLY:
