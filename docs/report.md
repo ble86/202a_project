@@ -14,6 +14,7 @@ Our project is to investigate an embedded systems-based methodology for identifi
 # 1. Introduction
 
 ### 1.a. Motivation & Objective
+Vibrational Sensor Approach to Malicious Keylogging is an attempt to prove the viability of a side channel attack on a keyboard. We record the vibrational information traveling through the keyboard to attempt to extract useful, potentially malicious, information about the true key activity of the keyboard. Such a proof of concept could potentially have real world implications for supply chains.
 ### 1.b. State of the Art & Its Limitations:
 
 ### 1.c. Novelty & Rationale
