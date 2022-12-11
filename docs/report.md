@@ -147,11 +147,11 @@ Click the image above to open YouTube video demonstration
 
 Despite the Edge Impulse bug the project was still a relative success. The ESP32 seemed like a solid choice for this project and its ADC is capable of much more than what we were doing with it, however this was due largely to luck. In retrospect it would have made sense to evaluate the platform choice with more rigor. For example, had the ESP32 not had a capable DIG ADC we would have been forced to change platforms. Furthermore, choosing a platform with bluetooth included in the SOM would have let us achieve more potential project goals as our platform only had WiFi capabilities.
 
-Unfortunately due to time constraints we did not have the option to look into deploying other machine learning models besides our Edge Impulse based model. Having more time, potential would have potentially allowed us to build a TensorFlow Lite model and achieve similar results to our undeployed edge impulse model.
+Unfortunately due to time constraints we did not have the option to look into deploying other machine learning models. Being that our deployed Edge Impulse model did work, having more time would have potentially allowed us to integrate another model. For example, Edge Impulse models are based on TensorFlow Lite. We could have potentially built our own two layer CNN using TensorFlow Lite and achieve similar results to our undeployed edge impulse model.
 
 Paragraph about success of word prediction model
 
-Paragraph about doing the same thing with an IMU because he seemed hell bent on it
+Finally, we believe there to be much more to investigate here in the future. Quality, placement, and number of contact mics should be further considered. For example, can we potentially achieve similar results with a small form factor custom embedded device and a single contact mic? Such an example would show the real world (potentially dangerous) use cases for our system, as it could be easily concealed. The type of sensor itself should also be considered. An IMU could potentially be a suitable replacement for the sensors in our system. Furthermore, an IMU typically measures at least three degrees of freedom in its sensing capabilities so given it is sensitive enough, much more data could potentially be learned about the key press.
 
 
 # 6. References
