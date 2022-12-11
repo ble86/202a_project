@@ -12,5 +12,5 @@ Our project is to investigate an embedded systems-based methodology for identifi
 
 * [Proposal](proposal)
 * [Midterm Checkpoint Presentation Slides]()
-* [Final Presentation Slides]()
+* [Final Presentation Slides](https://docs.google.com/presentation/d/1I2JQex22KVbXr6g-vyPDskEsJ6h9h_IjyLrjKF7fPRA/edit?usp=sharing)
 * [Final Report](report)
