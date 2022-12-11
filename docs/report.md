@@ -85,7 +85,7 @@ Figure 9. Initial Classification Accuracy Classifying for Localized Keyboard Are
 
 Through trial and error of the parameters of the signal processing blocks and by reassigning the localization areas based on the location of the sensors on the keyboard, we eventually managed to achieve a model accuracy of 72%, which we felt was sufficient to pass to a secondary model off-target to perform probabilistic word prediction. Furthermore, because our final model showed 100% accuracy at classifying the spacebar, this reaffirmed that we could use a probabilistic word prediction model since we would know when every word started and stopped.
 
-![Clusters](media/final_model_acc.png)
+![Final Model](media/final_model_acc.png)
 Figure 10. Final Classification Accuracy of CNN Model
 
 ### 3.c. Word Prediction Model
@@ -104,17 +104,7 @@ Through discussing with a team member at Edge Impulse using their support page, 
 Despite this issue, we could still perform classification keypress events even though the classification may not be accurate. The video below shows an example of keypress events occurring and the resulting probabilities for each of the 7 localization areas printed to the terminal as a string.
 
 
-<details open="" class="details-reset border rounded-2">
-<summary class="px-3 py-2 border-bottom">
-<svg aria-hidden="true" viewBox="0 0 16 16" version="1.1" data-view-component="true" height="16" width="16" class="octicon octicon-device-camera-video">
-<path fill-rule="evenodd" d="..."></path>
-</svg>
-<span aria-label="Video description dotnet-evergreen.mp4" class="m-1">Embedded Classification of Localized Key Areas from Keypresses</span>
-<span class="dropdown-caret"></span>
-</summary>
-
-<iframe src="https://www.youtube.com/shorts/SFzgV2aLuNs" width="640" height="480" allow="autoplay"></iframe>
-<br>
+[![Edge Classification](https://img.youtube.com/shorts/SFzgV2aLuNs/0.jpg)](https://www.youtube.com/shorts/SFzgV2aLuNs)
 
 Our ESP32 could thus reliably determine when a keypress occurred and classify it as we expect it to. Furthermore, we can see that different keypresses did result in different classifications of localized areas, even if the results of those classification were nonsensical. If we were to operate under the assumption of a fully working on-target model, these classifications would be sufficient to pass to our word prediction model to result in accurate keylogging.
 
