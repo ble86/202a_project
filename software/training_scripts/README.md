@@ -2,10 +2,20 @@
 
 The four Python scripts in this directory describe the process of collecting the raw sensor data and outputting it to a csv, cleaning the csv file, mapping the data to a new range values, and processing those new values to separate them into a CSV format expected by Edge Impulse Studio for model creation.
 
-## collect_data.py
+## data_collection.py
 This file is used to collect raw keypress sensor data and output it to a CSV.
 
-Perform the following steps to run this.
+Perform the following steps to run this:
+- Ensure that the suggested virtual environment has been set up as written in the software/ directory
+- Change line 12 in data_collectioni.py to set the file reference for the serial port used by your computer to communicate with the embedded device (Linux/Mac method of referring to devices)
+- Connect the USB cable from the remote keyboard to your personal computer. This will act as your new standard input source for the program
+- Execute the command
+```
+python3 data_collection.py
+```
+- One by one hit a single key on the keyboard used for sampling, leaving some time between key presses. The data will be recorded continuously for approximately one second every time a key is hit.
+- Quit the program by hitting the 'Ctrl' key
+- The script should output a file data.csv in the data folder of this project.
 
 ## clean_data.py
 This file is used to take the output CSV, where all information for multiple keypresses are written in one column, and clean it such that each keypress is written into an individual row, and each sensor value in time is written in a new column.
@@ -16,7 +26,7 @@ Perform the following steps to run this:
 ```
 python3 clean_data.py
 ```
-- The script should output a file newer_clean_data.csv in the data folder of this project.
+- The script should output a file clean_data.csv in the data folder of this project.
 
 ## map_data.py
 This file is used to take the cleaned CSV, and map each 12-bit sensor value to an 8-bit value and subtract a DC offset value of 50 from each value(empirically discovered).
@@ -27,7 +37,7 @@ Perform the following steps to run this:
 ```
 python3 map_data.py
 ```
-- The script should output a file newer_mapped_data.csv in the data folder of this project.
+- The script should output a file mapped_data.csv in the data folder of this project.
 
 ## data_processing.py
 This file is used to take the mapped CSV, containing data for each keypress, and separating the data to be samples associated for a preset localization cluster for each key.

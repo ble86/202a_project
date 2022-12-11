@@ -7,7 +7,7 @@ SAMPLES_PER_SENSOR = 512
 
 CURR_FOLDER = os.path.dirname(os.path.abspath(__file__))
 DATA_FOLDER = os.path.join(CURR_FOLDER, '../data')
-INPUT_FILE = os.path.join(DATA_FOLDER, 'newer_mapped_data.csv')
+INPUT_FILE = os.path.join(DATA_FOLDER, 'mapped_data.csv')
 OUTPUT_FOLDER = os.path.join(DATA_FOLDER, 'ei_clusters')
 
 def convert_to_ei_clusters(labels, data):

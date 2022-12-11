@@ -4,8 +4,8 @@ import os
 
 CURR_FOLDER = os.path.dirname(os.path.abspath(__file__))
 DATA_FOLDER = os.path.join(CURR_FOLDER, '../data')
-INPUT_FILE = os.path.join(DATA_FOLDER, 'newer_data.csv')
-OUTPUT_FILE = os.path.join(DATA_FOLDER, 'newer_clean_data.csv')
+INPUT_FILE = os.path.join(DATA_FOLDER, 'data.csv')
+OUTPUT_FILE = os.path.join(DATA_FOLDER, 'clean_data.csv')
 
 SENSOR_SAMPLE = 512*4
 

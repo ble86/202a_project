@@ -3,8 +3,8 @@ import os
 
 CURR_FOLDER = os.path.dirname(os.path.abspath(__file__))
 DATA_FOLDER = os.path.join(CURR_FOLDER, '../data')
-INPUT_FILE = os.path.join(DATA_FOLDER, 'newer_clean_data.csv')
-OUTPUT_FILE = os.path.join(DATA_FOLDER, 'newer_mapped_data.csv')
+INPUT_FILE = os.path.join(DATA_FOLDER, 'clean_data.csv')
+OUTPUT_FILE = os.path.join(DATA_FOLDER, 'mapped_data.csv')
 
 def map_range(row):
   return list(map(lambda x: (int(x) * (2**8 - 1) // (2**12 - 1)) - 50, row))

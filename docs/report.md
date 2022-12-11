@@ -116,7 +116,7 @@ Despite this issue, we could still perform classification keypress events even t
 
 Click the link above to open YouTube video demonstration
 
-Our ESP32 could thus reliably determine when a keypress occurred and classify it as we expect it to. Furthermore, we can see that different keypresses did result in different classifications of localized areas, even if the results of those classification were nonsensical. If we were to operate under the assumption of a fully working on-target model, these classifications would be sufficient to pass to our word prediction model to result in accurate keylogging.
+Our ESP32 could thus reliably determine when a keypress occurred and classify it as we expect it to. If we were to operate under the assumption of a fully working on-target model, these classifications would be sufficient to pass to our word prediction model to result in accurate keylogging.
 
 One point to note is that in our system, the source of the vibrational data may not have always been a keypress that triggered the classification. For example, banging the table caused enough environmental vibrational noise that the model considered it a keypress. 
 
