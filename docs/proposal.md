@@ -21,9 +21,11 @@ Our embedded system must have the ability to CONTINUOUSLY:
 2. Record key press event sensor data for further use (classification/training) at a high sampling rate
 3. Deploy an edge-based machine learning model
 4. Communicate classifications to a secondary device
+
 Our machine learning model must have the ability to:
 1. Process and scale data for classification
 2. Perform classification of keypresses with high accuracy (>65%) on raw sensor data
+
 Our secondary device must have the ability to:
 1. Accept classification data from the embedded device 
 2. Decipher the received data and display it as human-readable words to represent keylogging
