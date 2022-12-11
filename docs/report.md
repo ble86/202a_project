@@ -113,7 +113,8 @@ Through discussing with a team member at Edge Impulse using their support page, 
 Despite this issue, we could still perform classification keypress events even though the classification may not be accurate. The video below shows an example of keypress events occurring and the resulting probabilities for each of the 7 localization areas printed to the terminal as a string.
 
 [![Edge Classification](arduino_classification.png)](https://www.youtube.com/shorts/SFzgV2aLuNs)
-Click the image above to open YouTube video demonstration
+
+Click the link above to open YouTube video demonstration
 
 Our ESP32 could thus reliably determine when a keypress occurred and classify it as we expect it to. Furthermore, we can see that different keypresses did result in different classifications of localized areas, even if the results of those classification were nonsensical. If we were to operate under the assumption of a fully working on-target model, these classifications would be sufficient to pass to our word prediction model to result in accurate keylogging.
 
