@@ -16,9 +16,13 @@ Our project is to investigate an embedded systems-based methodology for identifi
 Vibrational Sensor Approach to Malicious Keylogging is an attempt to prove the viability of a side channel attack on a keyboard. We record the vibrational information traveling through the keyboard to attempt to extract useful, potentially malicious, information about the true key activity of the keyboard. Such a proof of concept could potentially have real world implications for supply chains.
 
 ### 1.b. State of the Art & Its Limitations:
+There has been some recent work on side channel attacks on keyboards. Notable methods rely on using smartphone accelerometers or microphones to sense typing on the phone or the typing on a nearby keyboard through propagated vibrations. The former was able to detect 4 digit passcodes on smartphones with a 61% success by using microphone access (Shumailov, 2019). While this is impressive, it is limited by the increasing use of “Allow access to microphone when open” permissions and also limiting permissions to non-trusted applications. It is also unable to classify more precise information, as password codes cover far larger regions on the phone compared to small keyboard icons.
+
+The phone based vibration detection for nearby keyboards was able to achieve a high success rate for word classification as high as 80%, but omitted words of four letters of lower due to the difficulty and ambiguity in classifying these words. It also required access to the phone’s accelerometer, and proper local placement of the phone. It is subject to simple defenses, like making sure phones are not placed on desks, or injecting some noise into the medium intentionally.
+
 
 ### 1.c. Novelty & Rationale
-The primary novelties to the project are the use of contact microphones and the post processing we are doing to associate key clusters. Various side channel analysis techniques have been demonstrated with sensing devices such as IMUs; however, to our knowledge there has yet to be an analysis done with a low cost contact microphone. Furthermore, as a result of our key clustering approach to localization we created a novel approach to infer words from key clusters. ERIC EXPLAIN PLZZZ
+The primary novelties to the project are the use of a dedicated system with contact microphones and the post processing we are doing to associate key clusters. A dedicated system, although more difficult and risky to deploy onto or inside a keyboard, is not subject to phone software security limitations. In addition, it allows for precise placement of the sensors, and hopefully higher fidelity when classifying letters, allowing us to classify smaller words. Various side channel analysis techniques have been demonstrated with sensing devices such as IMUs; however, to our knowledge there has yet to be an analysis done with a low cost contact microphone. Furthermore, as a result of our key clustering approach to localization we created a novel approach to infer words from key clusters. 
 
 ### 1.d. Potential Impact
 Given the successful inference of keypress vibration data into words, we will have demonstrated the viability of a malicious side channel attack. Due to the nature of the attack, there would be no direct method for detection of the attack. Such a device could potentially be integrated into a keyboard during manufacturing or potentially embedded into a small form factor device and attached to a keyboard already deployed in the field.
@@ -48,11 +52,14 @@ Our secondary device must have the ability to:
 
 
 # 2. Related Work
+Once we approached the limitation of how precisely our embedded model could classify keyboard areas, we needed to use natural language processing to classify words based on context. For individual words, this was closely related to an autocorrect problem. The simplest approach to autocorrect is by assigning nearby letters with an associated probability, and then to find the highest posterior probability. In our case, all letters in a cluster have equal probability, and letters in other clusters are assigned a probability based on the model’s assigned likelihood.
+
+Once possible words have been developed with associated probabilities, we took inspiration from word suggestion problems to create likely combinations of words. Peter Norvig, a director of research at google, demonstrates how he walks through the problem using likely 2-tuple and 1-tuple word combination databases, and we adapted this approach using the same database for our implementation.
 
 # 3. Technical Approach
 
 ### 3.a. Vibration Sensing and Amplification
-The most basic requirement of the project is the ability to detect vibrational data from key presses. To achieve this, four contact microphones were attached to the back of the keyboard. These contact microphones originally had a very low power output so an amplifier was used to amplify the signal approximately 10 times in the passband.
+The most basic requirement of the project is the ability to detect vibrational data from key presses. To achieve this, four contact microphones were attached to the back of the keyboard. These contact microphones originally had a very low signal power so an amplifier was used to amplify the signal approximately 10 times in the passband.
 
 ![Contact Mic](media/contact_mic.jpg)
 Figure 1. Contact Microphones Attached to Keyboard
@@ -104,6 +111,20 @@ Through trial and error of the parameters of the signal processing blocks and by
 Figure 10. Final Classification Accuracy of CNN Model
 
 ### 3.c. Word Prediction Model
+Two observations we made at this point of the model are:
+- The clustering was able to provide substantial information about the keypresses, but it alone was not able to form a precise prediction of words
+- The space bar was consistently good for classification.
+
+With this in mind, we implemented an off board language processing algorithm to utilize contextual information in generating likely words. We thought this was a realistic and reasonable approach, as the system only needs to send out one character per classification, which is the same as if it had fully classified the letter and desired to send the information out. In fact, in more power optimized implementations, this can be reduced to just 3 bits per key due to the smaller number of possible clusters. 
+	
+We utilized the high accuracy of space bar classification to separate and group key presses into words. Once we found this, we calculated all the possible words and the probability it was pressed. Then, we took the next words and found the relative probability that the 2-tuple existed. This was done by calculating the posterior probability (training data was uniform, so we did not divide by a constant):
+
+p(*classification data*|*2tuple was typed*)=[p(*classification data*|*2tuple was typed*) \* p(*2tuple was typed*)]
+
+The first term in the right expression is the output of our training model, which returned the. Key presses are conditionally independent, so they were multiplied to find the total probability of the classification. The second probability is given by our dataset of 2-tuples.
+
+In order to not overweight possible 2-tuples, as not all sets of 2 words are closely related in a sentence, we incorporated a threshold which, upon not being reached, would allow us to classify the single word based on 1-tuple probabilities. This is a naive implementation and can be improved through more complex NLP techniques, but it worked well for our test cases.
+
 
 # 4. Evaluation and Results
 Evaluating our system became a difficult challenge when we first attempted to deploy our Edge Impulse model on our embedded device. We found that for a given raw data sample that we knew to be in our training and test data, the classification that was given to that data point was different between Edge Impulse Studio and the on-target library that Edge Impulse generated. This situation occurred for both an ESP32 and an Arduino.
@@ -139,9 +160,9 @@ Figure 14. Word prediction from static probabilities of keyboard localization fo
 ![The Cow](media/the_cow.png)
 Figure 15. Word prediction from static probabilities of keyboard localization for the phrase "the cow jumped over the moon"
 
-We see that for the phrases "cut off" and "crock pot" the predicted words match exactly what we expect. Additionally, the predictive model is able to absorb occasional mispredictions in the keyboard localization model, as the context of the surrounding letters allows it to choose the best fitting word for the context.
+We see that for the phrases "cut off" and "crock pot" the predicted words match exactly what we expect. Additionally, we saw that the predictive model is able to absorb occasional mispredictions in the keyboard localization model where the desired letter cluster was the second or third most likely choice, as the context of the surrounding letters allows it to choose the best fitting word for the context.
 
-As for the phrase "the cow jumped over the moon" the predicted phrase only replaced "cow" for "air". What we found here is that because the localizations in the word "air" perfectly overlap the localizations in the word "cow", the more probable phrase that was returned by the model based on the key clustering was "the air". This shows a flaw in our current system of two-word classification in that the model only picks the most probable two-word pairs, leaving out information of other pairs. Additionally, the larger context of the sentence is not able to contribute to the classification of previous words.
+As for the phrase "the cow jumped over the moon" the predicted phrase only replaced "cow" for "air". What we found here is that because the localizations in the word "air" perfectly overlap the localizations in the word "cow", the more probable phrase that was returned by the model based on the key clustering was "the air". This shows a flaw in our current system of two-word classification in that the model only picks the most probable two-word pairs, leaving out information of other pairs. Additionally, the larger context of the sentence is not able to contribute to the classification of previous words. Unfortunately we were unable to create large-scale validation with datasets such as books and texts due to the deployable model, so additional test cases were costly to develop. However, we were able to demonstrate that random word sets and sentences could be classified with our test data.
 
 The video below shows a full demonstration of the embedded keypress system communicating with the off-target model. As mentioned before, we imposed a limitation to the word model since we could no longer trust the spacebar classification to separate words. The limitation we imposed is to assume all words are 4 letters long. As shown in the video below, we see that the system registers individual keypresses and after 4-8 keypresses it classifies single or two-word pairs, respectively. This leads us to believe that under a functioning edge model for keyboard localization, we would be able to achieve high accuracy predictions of typed words.
 
@@ -154,9 +175,20 @@ Despite the Edge Impulse bug the project was still a relative success. The ESP32
 
 Unfortunately due to time constraints we did not have the option to look into deploying other machine learning models. Being that our deployed Edge Impulse model did work, having more time would have potentially allowed us to integrate another model. For example, Edge Impulse models are based on TensorFlow Lite. We could have potentially built our own two layer CNN using TensorFlow Lite and achieve similar results to our undeployed edge impulse model.
 
-Paragraph about success of word prediction model
+The word prediction model was successful in absorbing many errors in clustering classification, as well as selecting a letter from the cluster. We demonstrated it could create reasonable information from even 3 letter words, which had not been done before. It is still to be evaluated what the percentage error is in this over a large number of words and sentences. 
 
 Finally, we believe there to be much more to investigate here in the future. Quality, placement, and number of contact mics should be further considered. For example, can we potentially achieve similar results with a small form factor custom embedded device and a single contact mic? Such an example would show the real world (potentially dangerous) use cases for our system, as it could be easily concealed. The type of sensor itself should also be considered. An IMU could potentially be a suitable replacement for the sensors in our system. Furthermore, an IMU typically measures at least three degrees of freedom in its sensing capabilities so given it is sensitive enough, much more data could potentially be learned about the key press.
 
 
 # 6. References
+Dong, Y., Fagert, J., Zhang, P. , Noh, H.Y. (2021). Non-parametric Bayesian Learning for Newcomer Detection using Footstep-Induced Floor Vibration. In Proceedings of the 20th International Conference on Information Processing in Sensor Networks (IPSN '21). Association for Computing Machinery, New York, NY, USA, 551–562. https://dl.acm.org/doi/pdf/10.1145/3412382.3458785
+
+Norvig, P. (2011, November 22). Natural language corpus data: Beautiful data. Retrieved December 12, 2022, from http://norvig.com/ngrams/ 
+
+Shumailov, I. Simon, L., Yan, J., Anderson, R. (2019). Hearing your touch: A new acoustic side channel on smartphones. https://doi.org/10.48550/arXiv.1903.11137
+
+Marquardt, P., Verma, A., Carter, H., and Traynor., P. (2011). (Sp)iPhone: decoding vibrations from nearby keyboards using mobile phone accelerometers. In Proceedings of the 18th ACM conference on Computer and communications security (CCS '11). Association for Computing Machinery, New York, NY, USA, 551–562. https://doi.org/10.1145/2046707.2046771
+
+Khurana, R., Nagaraja, S. (2013). Simple Defences against Vibration-Based Keystroke Fingerprinting Attacks. In: Christianson, B., Malcolm, J., Stajano, F., Anderson, J., Bonneau, J. (eds) Security Protocols XXI. Security Protocols 2013. Lecture Notes in Computer Science, vol 8263. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-642-41717-7_16 
+
+Edge Impulse Studio: https://www.edgeimpulse.com/
