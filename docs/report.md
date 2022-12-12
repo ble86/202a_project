@@ -1,5 +1,5 @@
 # Table of Contents
-* Abstract
+* [Abstract](abstract)
 * [Introduction](#1-introduction)
 * [Related Work](#2-related-work)
 * [Technical Approach](#3-technical-approach)
@@ -8,23 +8,29 @@
 * [References](#6-references)
 
 # Abstract
-
 Our project is to investigate an embedded systems-based methodology for identifiying a laptop or keyboard user's keystrokes. This project takes a hardware-based approach rather than a software-based approach to replicate a potential malicious attack on a user's computer. Our project is attempting to replicate vibrational-based sensing methods of machine learning identification problems investigated by research groups at Stanford, but to a smaller scale. In our project, vibrational sensors will be placed at the bottom of a laptop and/or keyboard and record vibrational patterns at multiple points of the laptop/keyboard chassis. Following this, a form of supervised or unsupervised learning model will be used to identify the keys that were pressed by the user and transmit those from a microcontroller to another device. The second device will then try to reconstruct the message that is being typed. Our goal is to have our system perform reasonably accurate keystroke identification such that a person separated from the keyboard may be able to deduce the information typed by the keyboard user.
 
 # 1. Introduction
 
 ### 1.a. Motivation & Objective
 Vibrational Sensor Approach to Malicious Keylogging is an attempt to prove the viability of a side channel attack on a keyboard. We record the vibrational information traveling through the keyboard to attempt to extract useful, potentially malicious, information about the true key activity of the keyboard. Such a proof of concept could potentially have real world implications for supply chains.
+
 ### 1.b. State of the Art & Its Limitations:
 
 ### 1.c. Novelty & Rationale
 The primary novelties to the project are the use of contact microphones and the post processing we are doing to associate key clusters. Various side channel analysis techniques have been demonstrated with sensing devices such as IMUs; however, to our knowledge there has yet to be an analysis done with a low cost contact microphone. Furthermore, as a result of our key clustering approach to localization we created a novel approach to infer words from key clusters. ERIC EXPLAIN PLZZZ
+
 ### 1.d. Potential Impact
 Given the successful inference of keypress vibration data into words, we will have demonstrated the viability of a malicious side channel attack. Due to the nature of the attack, there would be no direct method for detection of the attack. Such a device could potentially be integrated into a keyboard during manufacturing or potentially embedded into a small form factor device and attached to a keyboard already deployed in the field.
+
 ### 1.e. Challenges
-Perhaps the largest risk of our project was the uncertainty that contact microphones were not sensitive enough or operated in the desired band to pick up on the needed information to infer anything useful about the actual keys being pressed. Relevant work has shown the IMUs can be used to perform similar attacks; however, the use of contact mics is novel and we did not know if localization of key presses was possible using them. As a result, we decided to use four contact microphones on the back of the keyboard under the rationale that we would be able to extract localization data from the differences in time that the vibration reached each microphone.
+Perhaps the biggest challenge of our project is ensuring that the vibrational data of keypresses is recorded, processed, and analyzed with high fidelity. We expect the vibrations of keypresses to be very short and high frequency. This means that we need to be able to sample the data consistently very quickly and process the information very quickly such that it does not interfere with the data sampling process to obtain quality information from the vibrations for classification. Additionally, we need to have good sensor placement since keyboard keys are very close together, we need to make sure each letter is indentifiable as a unique press.
+
+<!-- Perhaps the largest risk of our project was the uncertainty that contact microphones were not sensitive enough or operated in the desired band to pick up on the needed information to infer anything useful about the actual keys being pressed. Relevant work has shown the IMUs can be used to perform similar attacks; however, the use of contact mics is novel and we did not know if localization of key presses was possible using them. As a result, we decided to use four contact microphones on the back of the keyboard under the rationale that we would be able to extract localization data from the differences in time that the vibration reached each microphone. -->
+
 ### 1.f. Project Goals/Requirements for Success
 The overall goal of our project is to demonstrate a side channel attack where keystroke information can be inferred from its resulting vibration. We want to be able to detect individual key-press events from vibration data and record that data for training and classification. We also want to deploy an edge-based machine learning for key press classification. Finally, we want to communicate our classifications to a second device to verify classifications can be read by another user to represent malicious keylogging.
+
 ### 1.g. Metrics of Success
 The specific steps needed to complete a system that has the ability to classify vibration based key presses was logically broken into three separate systems. The embedded system, the machine learning model, and secondary device, each with their separate metrics of success.
 
@@ -146,7 +152,6 @@ Click the image above to open YouTube video demonstration
 
 
 # 5. Discussion and Conclusions
-
 Despite the Edge Impulse bug the project was still a relative success. The ESP32 seemed like a solid choice for this project and its ADC is capable of much more than what we were doing with it, however this was due largely to luck. In retrospect it would have made sense to evaluate the platform choice with more rigor. For example, had the ESP32 not had a capable DIG ADC we would have been forced to change platforms. Furthermore, choosing a platform with bluetooth included in the SOM would have let us achieve more potential project goals as our platform only had WiFi capabilities.
 
 Unfortunately due to time constraints we did not have the option to look into deploying other machine learning models. Being that our deployed Edge Impulse model did work, having more time would have potentially allowed us to integrate another model. For example, Edge Impulse models are based on TensorFlow Lite. We could have potentially built our own two layer CNN using TensorFlow Lite and achieve similar results to our undeployed edge impulse model.
