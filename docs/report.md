@@ -123,7 +123,7 @@ $$
 p(classification data|2tuple was typed)=[p(classification data|2tuple was typed) * p(2tuple was typed)]
 $$
 
-The first term in the right expression is the output of our training model, which returned the. Key presses are conditionally independent, so they were multiplied to find the total probability of the classification. The second probability is given by our dataset of 2-tuples.
+The first term in the right expression is the output of our training mode. Key presses are conditionally independent, so they were multiplied to find the total probability of the classification. The second probability is given by our dataset of 2-tuples.
 
 In order to not overweight possible 2-tuples, as not all sets of 2 words are closely related in a sentence, we incorporated a threshold which, upon not being reached, would allow us to classify the single word based on 1-tuple probabilities. This is a naive implementation and can be improved through more complex NLP techniques, but it worked well for our test cases.
 
