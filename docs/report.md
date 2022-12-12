@@ -119,7 +119,9 @@ With this in mind, we implemented an off board language processing algorithm to 
 	
 We utilized the high accuracy of space bar classification to separate and group key presses into words. Once we found this, we calculated all the possible words and the probability it was pressed. Then, we took the next words and found the relative probability that the 2-tuple existed. This was done by calculating the posterior probability (training data was uniform, so we did not divide by a constant):
 
-p(*classification data*|*2tuple was typed*)=[p(*classification data*|*2tuple was typed*) \* p(*2tuple was typed*)]
+$$
+p(classification data|2tuple was typed)=[p(classification data|2tuple was typed) * p(2tuple was typed)]
+$$
 
 The first term in the right expression is the output of our training model, which returned the. Key presses are conditionally independent, so they were multiplied to find the total probability of the classification. The second probability is given by our dataset of 2-tuples.
 
